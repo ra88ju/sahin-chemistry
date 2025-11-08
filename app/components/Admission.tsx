@@ -10,12 +10,7 @@ export default function Admission() {
   });
 
   const courses = [
-    'Organic Chemistry',
-    'Inorganic Chemistry',
-    'Physical Chemistry',
-    'Analytical Chemistry',
-    'Biochemistry',
-    'Advanced Lab Techniques',
+    'Chemistry',
   ];
 
   const handleSubmit = (e: React.FormEvent) => {
