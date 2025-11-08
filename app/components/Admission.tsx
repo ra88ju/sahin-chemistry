@@ -1,30 +1,65 @@
 'use client';
 
 import { useState } from 'react';
+import Payment from './Payment';
 
 export default function Admission() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     course: '',
+    phone: '',
+    paymentMethod: '',
+    transactionId: '',
   });
 
   const courses = [
-    'Chemistry',
+    'Organic Chemistry',
+    'Inorganic Chemistry',
+    'Physical Chemistry',
+    'Analytical Chemistry',
+    'Biochemistry',
+    'Advanced Lab Techniques',
   ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission here
     console.log('Form submitted:', formData);
-    alert('Thank you for your application! We will contact you soon.');
-    setFormData({ name: '', email: '', course: '' });
+    
+    if (!formData.paymentMethod) {
+      alert('Please select a payment method');
+      return;
+    }
+
+    if (formData.paymentMethod !== 'cash' && !formData.transactionId) {
+      alert('Please enter your transaction ID');
+      return;
+    }
+
+    alert('Thank you for your application! We will contact you soon to confirm your admission.');
+    setFormData({
+      name: '',
+      email: '',
+      course: '',
+      phone: '',
+      paymentMethod: '',
+      transactionId: '',
+    });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
+    });
+  };
+
+  const handlePaymentMethodChange = (method: string) => {
+    setFormData({
+      ...formData,
+      paymentMethod: method,
+      transactionId: '', // Reset transaction ID when payment method changes
     });
   };
 
@@ -48,7 +83,7 @@ export default function Admission() {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                className="w-full px-4 py-3 border border-black rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                 placeholder="Enter your full name"
               />
             </div>
@@ -66,6 +101,22 @@ export default function Admission() {
                 required
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                 placeholder="Enter your email"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="phone" className="block text-gray-700 font-medium mb-2">
+                Phone Number
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                placeholder="Enter your phone number"
               />
             </div>
 
@@ -88,6 +139,29 @@ export default function Admission() {
                   </option>
                 ))}
               </select>
+            </div>
+
+            {/* Payment Method Section */}
+            <div className="border-t border-gray-200 pt-6">
+              <h3 className="text-xl font-semibold text-gray-800 mb-4">Payment Information</h3>
+              <Payment
+                onPaymentMethodChange={handlePaymentMethodChange}
+                selectedMethod={formData.paymentMethod}
+                showTransactionId={false}
+              />
+              {formData.paymentMethod && formData.paymentMethod !== 'cash' && (
+                <div className="mt-4">
+                  <input
+                    type="text"
+                    name="transactionId"
+                    value={formData.transactionId}
+                    onChange={handleChange}
+                    required={formData.paymentMethod !== 'cash'}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                    placeholder="Enter transaction ID"
+                  />
+                </div>
+              )}
             </div>
 
             <button
