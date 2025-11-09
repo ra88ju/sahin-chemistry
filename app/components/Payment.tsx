@@ -8,14 +8,65 @@ interface PaymentProps {
   showTransactionId?: boolean; // Control whether to show transaction ID input
 }
 
-export default function Payment({ onPaymentMethodChange, selectedMethod: initialMethod, showTransactionId = true }: PaymentProps) {
-  const [selectedMethod, setSelectedMethod] = useState(initialMethod || '');
+// bKash Logo Component - Using official bKash brand color (#E2136E)
+const BkashLogo = ({ className = 'w-16 h-10' }: { className?: string }) => (
+  <svg
+    viewBox="0 0 120 35"
+    className={className}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <rect width="120" height="35" rx="5" fill="#E2136E" />
+    <text
+      x="60"
+      y="24"
+      fontSize="20"
+      fontWeight="700"
+      fill="white"
+      textAnchor="middle"
+      fontFamily="'Arial Black', Arial, sans-serif"
+      letterSpacing="0.5px"
+    >
+      bKash
+    </text>
+  </svg>
+);
+
+// Nagad Logo Component - Using official Nagad brand color (#00A859)
+const NagadLogo = ({ className = 'w-16 h-10' }: { className?: string }) => (
+  <svg
+    viewBox="0 0 120 35"
+    className={className}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <rect width="120" height="35" rx="5" fill="#00A859" />
+    <text
+      x="60"
+      y="24"
+      fontSize="20"
+      fontWeight="700"
+      fill="white"
+      textAnchor="middle"
+      fontFamily="'Arial Black', Arial, sans-serif"
+      letterSpacing="1px"
+    >
+      NAGAD
+    </text>
+  </svg>
+);
+
+export default function Payment({ onPaymentMethodChange, selectedMethod: controlledMethod, showTransactionId = true }: PaymentProps) {
+  // Use controlled or uncontrolled pattern
+  const [uncontrolledMethod, setUncontrolledMethod] = useState('');
+  const isControlled = controlledMethod !== undefined;
+  const selectedMethod = isControlled ? controlledMethod : uncontrolledMethod;
 
   const paymentMethods = [
     {
       id: 'bkash',
       name: 'bKash',
-      icon: '💳',
+      icon: <BkashLogo className="w-16 h-10 mx-auto" />,
       description: 'Mobile Banking (bKash)',
       color: 'bg-red-50 border-red-200',
       hoverColor: 'hover:bg-red-100',
@@ -24,7 +75,7 @@ export default function Payment({ onPaymentMethodChange, selectedMethod: initial
     {
       id: 'nagad',
       name: 'Nagad',
-      icon: '📱',
+      icon: <NagadLogo className="w-16 h-10 mx-auto" />,
       description: 'Mobile Banking (Nagad)',
       color: 'bg-green-50 border-green-200',
       hoverColor: 'hover:bg-green-100',
@@ -51,7 +102,9 @@ export default function Payment({ onPaymentMethodChange, selectedMethod: initial
   ];
 
   const handleMethodSelect = (methodId: string) => {
-    setSelectedMethod(methodId);
+    if (!isControlled) {
+      setUncontrolledMethod(methodId);
+    }
     if (onPaymentMethodChange) {
       onPaymentMethodChange(methodId);
     }
@@ -134,7 +187,13 @@ export default function Payment({ onPaymentMethodChange, selectedMethod: initial
                   : `${method.color} ${method.hoverColor}`
               }`}
             >
-              <div className="text-3xl mb-2">{method.icon}</div>
+              <div className="mb-2 flex items-center justify-center">
+                {typeof method.icon === 'string' ? (
+                  <span className="text-3xl">{method.icon}</span>
+                ) : (
+                  method.icon
+                )}
+              </div>
               <div className="font-semibold text-gray-800">{method.name}</div>
               <div className="text-xs text-gray-600 mt-1">{method.description}</div>
               {selectedMethod === method.id && (

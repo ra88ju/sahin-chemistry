@@ -2,9 +2,18 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useAuth } from '../contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { logout, isAuthenticated } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+    router.push('/');
+  };
 
   const navLinks = [
     { name: 'Home', href: '#home', isAnchor: true },
@@ -49,6 +58,29 @@ export default function Header() {
                   {link.name}
                 </Link>
               )
+            )}
+            {isAuthenticated ? (
+              <>
+                <Link
+                  href="/student"
+                  className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium"
+                >
+                  Dashboard
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 text-sm font-medium"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/login"
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
+              >
+                Login
+              </Link>
             )}
           </div>
 
@@ -106,6 +138,34 @@ export default function Header() {
                   {link.name}
                 </Link>
               )
+            )}
+            {isAuthenticated ? (
+              <>
+                <Link
+                  href="/student"
+                  className="block py-2 text-gray-700 hover:text-blue-600 transition-colors duration-200"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Dashboard
+                </Link>
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setIsMenuOpen(false);
+                  }}
+                  className="block w-full text-left py-2 text-red-600 hover:text-red-700 transition-colors duration-200"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/login"
+                className="block py-2 text-blue-600 hover:text-blue-700 transition-colors duration-200 font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Login
+              </Link>
             )}
           </div>
         )}
