@@ -45,29 +45,51 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
-    // Simulate API call - Replace with actual API integration
-    // For demo purposes, accepting any email/password combination
-    // In production, this should call your backend API
-    
-    // Demo: Accept any credentials (replace with real authentication)
-    if (email && password) {
-      const userData: User = {
-        id: Date.now().toString(),
-        email: email,
-        name: email.split('@')[0], // Use email prefix as name for demo
-        studentId: `STU${Date.now().toString().slice(-6)}`,
-      };
+    try {
+      // Call API for authentication
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const result = await response.json();
+
+      if (result.success && result.data?.user) {
+        const userData: User = result.data.user;
+        setUser(userData);
+        localStorage.setItem('student_user', JSON.stringify(userData));
+        
+        // Store token if provided
+        if (result.data.token) {
+          localStorage.setItem('auth_token', result.data.token);
+        }
+        
+        return true;
+      }
       
-      setUser(userData);
-      localStorage.setItem('student_user', JSON.stringify(userData));
-      return true;
+      return false;
+    } catch (error) {
+      console.error('Login error:', error);
+      return false;
     }
-    return false;
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('student_user');
+  const logout = async () => {
+    try {
+      // Call logout API
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      setUser(null);
+      localStorage.removeItem('student_user');
+      localStorage.removeItem('auth_token');
+    }
   };
 
   return (

@@ -23,11 +23,25 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const success = await login(formData.email, formData.password);
-      if (success) {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success && result.data?.user) {
+        // Update auth context
+        await login(formData.email, formData.password);
         router.push('/student');
       } else {
-        setError('Invalid email or password. Please try again.');
+        setError(result.error || 'Invalid email or password. Please try again.');
       }
     } catch (err) {
       setError('An error occurred. Please try again.');

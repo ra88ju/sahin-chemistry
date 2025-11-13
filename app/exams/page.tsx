@@ -22,7 +22,7 @@ export default function ExamsPage() {
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case 'Beginner':
-        return 'bg-green-100 text-green-800';
+        return 'bg-green-300 text-green-800';
       case 'Intermediate':
         return 'bg-yellow-100 text-yellow-800';
       case 'Advanced':
@@ -46,19 +46,20 @@ export default function ExamsPage() {
             </p>
 
             {/* Filters */}
-            <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+            <div className="bg-white rounded-lg shadow-lg p-6 mb-8 border border-gray-100">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-blue-700 mb-2">
                     Subject
                   </label>
                   <select
                     value={selectedSubject}
                     onChange={(e) => setSelectedSubject(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-black bg-white shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer"
+                    style={{ color: '#000' }}
                   >
                     {subjects.map((subject) => (
-                      <option key={subject} value={subject}>
+                      <option key={subject} value={subject} style={{ color: '#000', backgroundColor: '#fff' }}>
                         {subject}
                       </option>
                     ))}
@@ -71,10 +72,11 @@ export default function ExamsPage() {
                   <select
                     value={selectedDifficulty}
                     onChange={(e) => setSelectedDifficulty(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-black bg-white shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer"
+                    style={{ color: '#000' }}
                   >
                     {difficulties.map((difficulty) => (
-                      <option key={difficulty} value={difficulty}>
+                      <option key={difficulty} value={difficulty} style={{ color: '#000', backgroundColor: '#fff' }}>
                         {difficulty}
                       </option>
                     ))}

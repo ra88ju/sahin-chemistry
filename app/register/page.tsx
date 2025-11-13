@@ -35,10 +35,26 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      // Simulate registration - Replace with actual API call
-      // For demo, just redirect to login
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      router.push('/login?registered=true');
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          password: formData.password,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        router.push('/login?registered=true');
+      } else {
+        setError(result.error || 'Registration failed. Please try again.');
+      }
     } catch (err) {
       setError('Registration failed. Please try again.');
     } finally {

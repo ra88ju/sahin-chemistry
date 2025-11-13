@@ -48,8 +48,8 @@ export default function Courses() {
               key={index}
               className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-blue-100"
             >
-              <h3 className="text-xl font-semibold mb-2 text-blue-600">{course.name}</h3>
-              <p className="text-sm text-gray-600 mb-3">
+              <h3 className="text-xl font-semibold mb-2 text-blue-700">{course.name}</h3>
+              <p className="text-sm text-gray-800 mb-3">
                 <span className="font-medium">Duration:</span> {course.duration}
               </p>
               <p className="text-gray-700">{course.description}</p>
