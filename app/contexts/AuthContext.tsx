@@ -1,75 +1,46 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-  phone?: string;
-  studentId?: string;
-}
+import { authApi, AuthUser } from '../lib/api';
 
 interface AuthContextType {
-  user: User | null;
-  login: (email: string, password: string) => Promise<boolean>;
-  logout: () => void;
+  user: AuthUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  login: (email: string, password: string) => Promise<boolean>;
+  logout: () => void;
+  register: (userData: { name: string; email: string; phone: string; password: string }) => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Only run on client side to avoid SSR/hydration issues
-    if (typeof window !== 'undefined') {
+    // Check if user is stored in localStorage
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
       try {
-        const storedUser = localStorage.getItem('student_user');
-        if (storedUser) {
-          const parsedUser = JSON.parse(storedUser) as User;
-          setUser(parsedUser);
-        }
-      } catch {
-        // If parsing fails, remove corrupted data
-        localStorage.removeItem('student_user');
-      } finally {
-        setIsLoading(false);
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+      } catch (error) {
+        console.error('Error parsing stored user:', error);
+        localStorage.removeItem('user');
       }
-    } else {
-      setIsLoading(false);
     }
+    setIsLoading(false);
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
-      // Call API for authentication
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const result = await response.json();
-
-      if (result.success && result.data?.user) {
-        const userData: User = result.data.user;
-        setUser(userData);
-        localStorage.setItem('student_user', JSON.stringify(userData));
-        
-        // Store token if provided
-        if (result.data.token) {
-          localStorage.setItem('auth_token', result.data.token);
-        }
-        
+      const response = await authApi.login(email, password);
+      if (response.success && response.data?.user) {
+        setUser(response.data.user);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
         return true;
       }
-      
       return false;
     } catch (error) {
       console.error('Login error:', error);
@@ -77,34 +48,44 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const logout = async () => {
+  const register = async (userData: {
+    name: string;
+    email: string;
+    phone: string;
+    password: string;
+  }): Promise<boolean> => {
     try {
-      // Call logout API
-      await fetch('/api/auth/logout', {
-        method: 'POST',
-      });
+      const response = await authApi.register(userData);
+      if (response.success && response.data?.user) {
+        setUser(response.data.user);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        return true;
+      }
+      return false;
     } catch (error) {
-      console.error('Logout error:', error);
-    } finally {
-      setUser(null);
-      localStorage.removeItem('student_user');
-      localStorage.removeItem('auth_token');
+      console.error('Registration error:', error);
+      return false;
     }
   };
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        login,
-        logout,
-        isAuthenticated: !!user,
-        isLoading,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('user');
+    authApi.logout().catch((error) => {
+      console.error('Logout error:', error);
+    });
+  };
+
+  const value: AuthContextType = {
+    user,
+    isAuthenticated: !!user,
+    isLoading,
+    login,
+    logout,
+    register,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
