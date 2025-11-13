@@ -23,25 +23,11 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-        }),
-      });
-
-      const result = await response.json();
-
-      if (result.success && result.data?.user) {
-        // Update auth context
-        await login(formData.email, formData.password);
+      const success = await login(formData.email, formData.password);
+      if (success) {
         router.push('/student');
       } else {
-        setError(result.error || 'Invalid email or password. Please try again.');
+        setError('Invalid email or password. Please try again.');
       }
     } catch (err) {
       setError('An error occurred. Please try again.');
@@ -154,12 +140,6 @@ export default function LoginPage() {
                   <Link href="/register" className="text-blue-600 hover:text-blue-800 font-medium">
                     Register here
                   </Link>
-                </p>
-              </div>
-
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                <p className="text-xs text-gray-500 text-center">
-                  Demo: You can use any email and password to login
                 </p>
               </div>
             </div>
