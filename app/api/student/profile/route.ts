@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
 
     // Fetch user from database
     const usersCollection = await getCollection<User>('users');
-    const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+    const user = await usersCollection.findOne({ _id: new ObjectId(userId) } as any);
 
     if (!user) {
       return NextResponse.json(
@@ -87,7 +87,7 @@ export async function PUT(request: NextRequest) {
     if (phone) updateData.phone = phone;
 
     const result = await usersCollection.updateOne(
-      { _id: new ObjectId(userId) },
+      { _id: new ObjectId(userId) } as any,
       { $set: updateData }
     );
 
@@ -99,7 +99,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Fetch updated user
-    const updatedUser = await usersCollection.findOne({ _id: new ObjectId(userId) });
+    const updatedUser = await usersCollection.findOne({ _id: new ObjectId(userId) } as any);
 
     if (!updatedUser) {
       return NextResponse.json(

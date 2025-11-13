@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
 
     // Fetch user from database
     const usersCollection = await getCollection<User>('users');
-    const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+    const user = await usersCollection.findOne({ _id: new ObjectId(userId) } as any);
 
     if (!user) {
       return NextResponse.json(

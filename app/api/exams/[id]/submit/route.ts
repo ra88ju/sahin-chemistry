@@ -5,10 +5,11 @@ import { ExamResult } from '../../../../models/ExamResult';
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const examId = params.id;
+    const { id } = await params;
+    const examId = id;
     const body = await request.json();
     const { answers, timeSpent } = body;
 
@@ -51,9 +52,10 @@ export async function POST(
     const percentage = (score / exam.totalPoints) * 100;
 
     // TODO: Get userId from authenticated token
-    // For now, save without userId (can be added later)
+    // For now, use empty string (can be added later)
     const examResultsCollection = await getCollection<ExamResult>('examResults');
     const newExamResult: ExamResult = {
+      userId: '', // Will be populated when authentication is implemented
       examId: exam.id,
       answers,
       score,
