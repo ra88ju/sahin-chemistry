@@ -103,54 +103,114 @@ export default function ExamPage() {
     return (
       <main className="min-h-screen">
         <Header />
-        <div className="pt-24 pb-20 bg-gradient-to-br from-blue-50 to-indigo-50 min-h-screen">
+        <div className="pt-24 pb-20 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
           <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto">
-              <div className="bg-white rounded-lg shadow-lg p-8">
-                <h1 className="text-3xl font-bold mb-4 text-gray-800">{exam.title}</h1>
-                <div className="space-y-4 mb-8">
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">Duration:</span>
-                    <span className="font-semibold">{exam.duration} minutes</span>
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-white rounded-2xl shadow-xl p-8 md:p-10 animate-fade-in backdrop-blur-sm border border-white/50">
+                {/* Title Section */}
+                <div className="text-center mb-8">
+                  <h1 className="text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                    {exam.title}
+                  </h1>
+                  <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 mx-auto rounded-full"></div>
+                </div>
+
+                {/* Exam Details Grid */}
+                <div className="grid md:grid-cols-2 gap-4 mb-8">
+                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-5 border border-blue-200/50 hover:shadow-md transition-all duration-300 hover:scale-[1.02]">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600 font-medium">Duration</span>
+                      <span className="font-bold text-blue-700 text-lg">{exam.duration} min</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">Total Questions:</span>
-                    <span className="font-semibold">{exam.totalQuestions}</span>
+                  <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl p-5 border border-indigo-200/50 hover:shadow-md transition-all duration-300 hover:scale-[1.02]">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600 font-medium">Total Questions</span>
+                      <span className="font-bold text-indigo-700 text-lg">{exam.totalQuestions}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">Total Points:</span>
-                    <span className="font-semibold">{exam.totalPoints}</span>
+                  <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-5 border border-purple-200/50 hover:shadow-md transition-all duration-300 hover:scale-[1.02]">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600 font-medium">Total Points</span>
+                      <span className="font-bold text-purple-700 text-lg">{exam.totalPoints}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">Subject:</span>
-                    <span className="font-semibold">{exam.subject}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">Difficulty:</span>
-                    <span className="font-semibold">{exam.difficulty}</span>
+                  <div className="bg-gradient-to-br from-pink-50 to-pink-100 rounded-xl p-5 border border-pink-200/50 hover:shadow-md transition-all duration-300 hover:scale-[1.02]">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600 font-medium">Difficulty</span>
+                      <span className="font-bold text-pink-700 text-lg capitalize">{exam.difficulty}</span>
+                    </div>
                   </div>
                 </div>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                  <h3 className="font-semibold text-blue-900 mb-2">Instructions:</h3>
-                  <ul className="list-disc list-inside text-blue-800 space-y-1 text-sm">
-                    <li>Read each question carefully before answering</li>
-                    <li>You can navigate between questions using Previous/Next buttons</li>
-                    <li>The exam will auto-submit when time runs out</li>
-                    <li>You can submit the exam early if you finish before time</li>
-                    <li>Review your answers before submitting</li>
+
+                {/* Subject Badge */}
+                <div className="mb-8 text-center">
+                  <span className="inline-block px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full font-semibold text-sm shadow-lg">
+                    {exam.subject}
+                  </span>
+                </div>
+
+                {/* Instructions Section */}
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200/60 rounded-xl p-6 mb-8 shadow-inner">
+                  <h3 className="font-bold text-blue-900 mb-4 text-lg flex items-center">
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Instructions
+                  </h3>
+                  <ul className="space-y-3 text-blue-800">
+                    <li className="flex items-start">
+                      <svg className="w-5 h-5 mr-3 mt-0.5 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <span className="text-sm md:text-base">Read each question carefully before answering</span>
+                    </li>
+                    <li className="flex items-start">
+                      <svg className="w-5 h-5 mr-3 mt-0.5 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <span className="text-sm md:text-base">You can navigate between questions using Previous/Next buttons</span>
+                    </li>
+                    <li className="flex items-start">
+                      <svg className="w-5 h-5 mr-3 mt-0.5 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <span className="text-sm md:text-base">The exam will auto-submit when time runs out</span>
+                    </li>
+                    <li className="flex items-start">
+                      <svg className="w-5 h-5 mr-3 mt-0.5 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <span className="text-sm md:text-base">You can submit the exam early if you finish before time</span>
+                    </li>
+                    <li className="flex items-start">
+                      <svg className="w-5 h-5 mr-3 mt-0.5 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <span className="text-sm md:text-base">Review your answers before submitting</span>
+                    </li>
                   </ul>
                 </div>
-                <div className="flex space-x-4">
+
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row gap-4">
                   <button
                     onClick={handleStartExam}
-                    className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-300"
+                    className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center"
                   >
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                     Start Exam
                   </button>
                   <button
                     onClick={() => router.push('/exams')}
-                    className="flex-1 bg-gray-200 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors duration-300"
+                    className="flex-1 bg-white text-gray-700 py-4 rounded-xl font-semibold text-lg border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center shadow-md"
                   >
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
                     Back to Exams
                   </button>
                 </div>
