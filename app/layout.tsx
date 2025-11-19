@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sahin Chemistry Center - Excellence in Chemical Education",
-  description: "Premier chemistry education center offering expert courses, experienced teachers, and comprehensive admission services.",
+  title: "Chemistry World",
+  description: "Sahin Chemistry World is a premier chemistry education center offering expert courses, experienced teachers, and comprehensive admission services.",
 };
 
 export default function RootLayout({

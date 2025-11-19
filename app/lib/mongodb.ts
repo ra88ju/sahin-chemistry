@@ -1,11 +1,11 @@
 import { MongoClient, Db, Document } from 'mongodb';
 
 // MongoDB connection string
-// Set MONGODB_URI in .env.local file
-// Format: mongodb+srv://shajibislam3004:YOUR_PASSWORD@cluster-1.lnfudjh.mongodb.net/?appName=Cluster-1
+// Set MONGODB_URI in .env.local file to override this default
+// Format: mongodb+srv://USERNAME:PASSWORD@cluster-1.lnfudjh.mongodb.net/?appName=Cluster-1
 // Note: If password contains special characters like @, #, %, etc., they must be URL-encoded
 // @ = %40, # = %23, % = %25, etc.
-const uri = process.env.MONGODB_URI || 'mongodb+srv://shajibislam3004:Shajib%40123@cluster-1.lnfudjh.mongodb.net/?appName=Cluster-1';
+const uri = process.env.MONGODB_URI || 'mongodb+srv://shajibislam3004:jm5mo3ag3dLvtSP1@cluster-1.lnfudjh.mongodb.net/?appName=Cluster-1';
 const dbName = process.env.MONGODB_DB_NAME || 'sahin-chemistry';
 
 const options = {};

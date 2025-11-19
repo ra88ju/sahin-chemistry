@@ -8,6 +8,7 @@ interface User {
   name: string;
   phone?: string;
   studentId?: string;
+  role?: 'student' | 'admin';
 }
 
 interface AuthContextType {
@@ -16,6 +17,7 @@ interface AuthContextType {
   logout: () => void;
   isAuthenticated: boolean;
   isLoading: boolean;
+  isAdmin: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -100,6 +102,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         logout,
         isAuthenticated: !!user,
         isLoading,
+        isAdmin: user?.role === 'admin',
       }}
     >
       {children}
