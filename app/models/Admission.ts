@@ -1,5 +1,7 @@
+import { ObjectId } from 'mongodb';
+
 export interface Admission {
-  _id?: string;
+  _id?: ObjectId | string;
   name: string;
   email: string;
   phone: string;

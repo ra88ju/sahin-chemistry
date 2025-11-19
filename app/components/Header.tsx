@@ -29,24 +29,24 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 py-4">
-      <nav className="container mx-auto px-4">
-        <div className="flex items-center justify-between rounded-2xl px-6 py-3 bg-white shadow-md backdrop-blur-sm">
+      <nav className="container mx-auto px-4 max-w-7xl">
+        <div className="flex items-center justify-between rounded-2xl px-4 md:px-6 py-3 bg-white shadow-md backdrop-blur-sm">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-2 flex-shrink-0">
             <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xl">SC</span>
             </div>
-            <span className="text-xl font-bold text-gray-800">Chemistry World</span>
+            <span className="text-lg md:text-xl font-bold text-gray-800 whitespace-nowrap">Chemistry World</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-2">
+          <div className="hidden lg:flex items-center space-x-1 xl:space-x-2 flex-1 justify-center max-w-4xl mx-4">
             {navLinks.map((link) =>
               link.isAnchor ? (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg transition-all duration-200 font-medium"
+                  className="text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-2 xl:px-4 py-2 rounded-lg transition-all duration-200 font-medium text-sm xl:text-base whitespace-nowrap"
                 >
                   {link.name}
                 </a>
@@ -54,23 +54,27 @@ export default function Header() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg transition-all duration-200 font-medium"
+                  className="text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-2 xl:px-4 py-2 rounded-lg transition-all duration-200 font-medium text-sm xl:text-base whitespace-nowrap"
                 >
                   {link.name}
                 </Link>
               )
             )}
+          </div>
+
+          {/* Desktop Auth Buttons */}
+          <div className="hidden lg:flex items-center space-x-2 flex-shrink-0">
             {isAuthenticated ? (
               <>
                 <Link
                   href="/student"
-                  className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium"
+                  className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium text-sm xl:text-base px-2 xl:px-4 py-2 whitespace-nowrap"
                 >
                   Dashboard
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 text-sm font-medium"
+                  className="px-3 xl:px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 text-sm font-medium whitespace-nowrap"
                 >
                   Logout
                 </button>
@@ -78,7 +82,7 @@ export default function Header() {
             ) : (
               <Link
                 href="/login"
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
+                className="px-3 xl:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium text-sm xl:text-base whitespace-nowrap"
               >
                 Login
               </Link>
@@ -87,7 +91,7 @@ export default function Header() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-gray-700 focus:outline-none"
+            className="lg:hidden text-gray-700 focus:outline-none"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -118,7 +122,7 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 space-y-2 bg-gray-50 rounded-xl p-4">
+          <div className="lg:hidden mt-4 pb-4 space-y-2 bg-gray-50 rounded-xl p-4">
             {navLinks.map((link) =>
               link.isAnchor ? (
                 <a

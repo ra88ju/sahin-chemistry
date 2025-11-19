@@ -1,5 +1,7 @@
+import { ObjectId } from 'mongodb';
+
 export interface Payment {
-  _id?: string;
+  _id?: ObjectId | string;
   userId?: string;
   name: string;
   email: string;
