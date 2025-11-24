@@ -1,3 +1,7 @@
+ 'use client';
+
+import { useState } from 'react';
+
 interface Course {
   name: string;
   duration: string;
@@ -9,6 +13,7 @@ interface Course {
   enrollmentStatus: 'Open' | 'Waitlist' | 'Filling Fast';
   curriculumUrl: string;
   theme: 'blue' | 'indigo' | 'cyan';
+  details: string[];
 }
 
 const courses: Course[] = [
@@ -23,6 +28,11 @@ const courses: Course[] = [
     enrollmentStatus: 'Filling Fast',
     curriculumUrl: '#admission',
     theme: 'blue',
+    details: [
+      'Run-throughs of aromatic & aliphatic reaction mechanisms.',
+      'Guided problem-solving clinics centered on synthesis.',
+      'Weekly peer-led spectroscopic data workshops.',
+    ],
   },
   {
     name: 'Inorganic Chemistry',
@@ -35,6 +45,11 @@ const courses: Course[] = [
     enrollmentStatus: 'Open',
     curriculumUrl: '#admission',
     theme: 'indigo',
+    details: [
+      'Simulation-led crystal field and bonding studies.',
+      'Hands-on coordination chemistry modeling in lab suites.',
+      'Progressive assessments tied to inorganic structure ideas.',
+    ],
   },
   {
     name: 'Physical Chemistry',
@@ -47,6 +62,11 @@ const courses: Course[] = [
     enrollmentStatus: 'Open',
     curriculumUrl: '#contact',
     theme: 'cyan',
+    details: [
+      'Thermodynamics clinics with real-time data analysis.',
+      'Quantum-focused lab sessions with high-res visualizers.',
+      'Project work mapping physical principles to reactions.',
+    ],
   },
   {
     name: 'Analytical Chemistry',
@@ -59,6 +79,11 @@ const courses: Course[] = [
     enrollmentStatus: 'Waitlist',
     curriculumUrl: '#contact',
     theme: 'blue',
+    details: [
+      'Chromatography bootcamps with troubleshooting scenarios.',
+      'Instrument calibration labs paced for mastery.',
+      'Analytical case studies connecting theory to real samples.',
+    ],
   },
   {
     name: 'Biochemistry',
@@ -71,6 +96,11 @@ const courses: Course[] = [
     enrollmentStatus: 'Open',
     curriculumUrl: '#admission',
     theme: 'indigo',
+    details: [
+      'Protein folding studios exploring thermodynamic stability.',
+      'Metabolic pathway mapping with animated visual aids.',
+      'Lab journals focused on living systems chemistry.',
+    ],
   },
   {
     name: 'Advanced Lab Techniques',
@@ -83,6 +113,11 @@ const courses: Course[] = [
     enrollmentStatus: 'Filling Fast',
     curriculumUrl: '#admission',
     theme: 'cyan',
+    details: [
+      'Blueprints for setting up advanced lab workflows safely.',
+      'Equipment deep dives with manufacturer-style run-throughs.',
+      'Evaluation rubrics covering troubleshooting and analysis.',
+    ],
   },
 ];
 
@@ -120,6 +155,14 @@ const levelThemes: Record<
 };
 
 export default function Courses() {
+  const [activeCourse, setActiveCourse] = useState<Course | null>(null);
+
+  const handleViewCurriculum = (course: Course) => {
+    setActiveCourse(course);
+  };
+
+  const closeCurriculum = () => setActiveCourse(null);
+
   return (
     <section
       id="courses"
@@ -127,9 +170,8 @@ export default function Courses() {
     >
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <p className="text-xs uppercase tracking-[0.5em] text-blue-500 mb-3">Programs</p>
           <h2 className="text-4xl font-bold text-gray-900">Our Courses</h2>
-          <p className="text-gray-500 mt-3 max-w-2xl mx-auto text-base">
+          <p className="text-blue-500 text-lg mt-3 max-w-2xl mx-auto text-base">
             Select from curated modules designed to balance theory, lab experience, and problem-solving clinics.
           </p>
         </div>
@@ -144,8 +186,8 @@ export default function Courses() {
               />
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <h3 className="text-2xl font-semibold text-slate-900">{course.name}</h3>
-                  <p className="text-sm text-slate-500 mt-2 leading-relaxed">
+                  <h3 className="text-3xl font-semibold text-slate-900">{course.name}</h3>
+                  <p className="text-base text-slate-900 mt-2 leading-relaxed">
                     {course.description}
                   </p>
                 </div>
@@ -154,18 +196,18 @@ export default function Courses() {
                 </span>
               </div>
 
-              <div className="mt-5 flex flex-wrap items-center gap-4 text-sm text-slate-500">
+              <div className="mt-5 flex flex-wrap items-center gap-4 text-sm text-slate-900">
                 <span>
                   Start:{' '}
                   <span className="font-semibold text-slate-900">{course.startSession}</span>
                 </span>
                 <span className="text-slate-300">•</span>
-                <span>{course.sessionsPerWeek}</span>
+                <span className="text-slate-900">{course.sessionsPerWeek}</span>
                 <span className="text-slate-300">•</span>
-                <span>{course.duration}</span>
+                <span className="text-slate-900">{course.duration}</span>
               </div>
 
-              <ul className="mt-5 space-y-2 text-sm text-slate-600 border-t border-slate-100 pt-4">
+              <ul className="mt-5 space-y-2 text-base text-slate-900 border-t border-slate-100 pt-4">
                 {course.highlights.map((highlight, highlightIndex) => (
                   <li key={highlightIndex} className="flex items-center gap-2">
                     <span className={`w-1.5 h-1.5 rounded-full ${levelThemes[course.theme].dot}`} />
@@ -179,9 +221,10 @@ export default function Courses() {
                   <span className={`w-2 h-2 rounded-full animate-pulse ${levelThemes[course.theme].dot}`} />
                   <span className={levelThemes[course.theme].text}>{course.enrollmentStatus}</span>
                 </div>
-                <a
-                  href={course.curriculumUrl}
-                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:border-blue-300 hover:text-blue-600 transition"
+                <button
+                  type="button"
+                  onClick={() => handleViewCurriculum(course)}
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-900 bg-white hover:border-blue-300 hover:text-blue-700 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500"
                 >
                   View Curriculum
                   <svg
@@ -192,12 +235,74 @@ export default function Courses() {
                     viewBox="0 0 24 24"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14m-6-6l6 6-6 6" />
-                  </svg>
-                </a>
+                </svg>
+              </button>
               </div>
             </div>
           ))}
         </div>
+        {activeCourse && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+            <div
+              className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"
+              onClick={closeCurriculum}
+            />
+            <div
+              className="relative max-w-3xl w-full rounded-3xl bg-white p-8 shadow-2xl overflow-hidden"
+              role="dialog"
+              aria-modal="true"
+              aria-label={`${activeCourse.name} curriculum`}
+            >
+              <button
+                type="button"
+                onClick={closeCurriculum}
+                className="absolute top-4 right-4 rounded-full bg-slate-100 p-2 text-slate-600 hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500"
+              >
+                <span className="sr-only">Close</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+              <div className="space-y-4">
+                <p className="text-xs uppercase tracking-[0.5em] text-slate-500">Curriculum Focus</p>
+                <h3 className="text-4xl font-bold text-slate-900">{activeCourse.name}</h3>
+                <p className="text-lg text-slate-900 leading-relaxed">{activeCourse.description}</p>
+                <div className="flex flex-wrap gap-6 text-sm text-slate-600">
+                  <span className="font-semibold text-slate-900">
+                    {activeCourse.startSession} · {activeCourse.duration}
+                  </span>
+                  <span>
+                    {activeCourse.sessionsPerWeek} · {activeCourse.enrollmentStatus}
+                  </span>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-4 text-base text-slate-700">
+                  {activeCourse.highlights.map((highlight, highlightIndex) => (
+                    <div key={`highlight-${highlightIndex}`} className="rounded-2xl border border-slate-100 bg-slate-50/70 p-4 font-medium text-slate-900">
+                      {highlight}
+                    </div>
+                  ))}
+                </div>
+                <ul className="mt-4 space-y-3 text-lg leading-relaxed text-slate-800">
+                  {activeCourse.details.map((detail, detailIndex) => (
+                    <li key={`detail-${detailIndex}`} className="flex items-start gap-3">
+                      <span className="mt-1 h-2 w-2 rounded-full bg-slate-900" />
+                      <span>{detail}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    onClick={closeCurriculum}
+                    className="rounded-full border border-slate-200 px-5 py-2 text-sm font-semibold text-slate-900 hover:border-blue-300 hover:text-blue-600 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

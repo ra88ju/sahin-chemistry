@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextRequest, NextResponse } from 'next/server';
 import { getCollection } from '../../lib/mongodb';
 import { User } from '../../models/User';
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     // Try to connect and query the database
     const usersCollection = await getCollection<User>('users');
@@ -40,6 +42,7 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
 
 
 

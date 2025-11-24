@@ -24,7 +24,8 @@ const notices = [
     },
     secondaryAction: {
       label: 'Download Schedule',
-      href: '#',
+      href: '/admission-test-schedule.txt',
+      download: true,
     },
   },
   {
@@ -50,6 +51,12 @@ export default function Hero() {
   const [colorIndex, setColorIndex] = useState(0);
   const [isNoticeOpen, setIsNoticeOpen] = useState(false);
   const [activeNoticeIndex, setActiveNoticeIndex] = useState(0);
+  const handleOpenNotices = () => {
+    setActiveNoticeIndex(0);
+    setIsNoticeOpen(true);
+  };
+
+  const handleCloseNotices = () => setIsNoticeOpen(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -58,6 +65,19 @@ export default function Hero() {
 
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (!isNoticeOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        handleCloseNotices();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isNoticeOpen]);
 
   return (
     <section
@@ -97,16 +117,12 @@ export default function Hero() {
                 href="#admission"
                 className="inline-block bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 shadow-lg"
               >
-                Apply Now
+                Admission
               </a>
-              <a
-                href="#contact"
-                className="inline-block border border-white/80 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white/10 transition-all duration-300"
-              >
-                Contact Us
-              </a>
+
               <button
-                onClick={() => setIsNoticeOpen(true)}
+                type="button"
+                onClick={handleOpenNotices}
                 className="inline-flex items-center gap-2 bg-yellow-400/90 hover:bg-yellow-300 text-blue-900 px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg w-full sm:w-auto justify-center"
               >
                 <svg
@@ -168,11 +184,21 @@ export default function Hero() {
       </div>
       {isNoticeOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center px-4 py-6">
-          <div className="bg-white text-gray-800 rounded-3xl max-w-3xl w-full shadow-2xl relative overflow-hidden">
+          <div
+            className="absolute inset-0"
+            onClick={handleCloseNotices}
+          />
+          <div
+            className="relative max-w-3xl w-full rounded-3xl bg-white px-5 py-6 shadow-2xl z-10 overflow-hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Latest important notice"
+            onClick={(event) => event.stopPropagation()}
+          >
             <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
-            <div className="p-5 sm:p-8">
             <button
-              onClick={() => setIsNoticeOpen(false)}
+              type="button"
+              onClick={handleCloseNotices}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
               aria-label="Close notice"
             >
@@ -187,10 +213,10 @@ export default function Hero() {
               </svg>
             </button>
 
-            <div className="flex flex-col gap-6">
+            <div className="space-y-6 mt-6">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                  <div className="flex flex-wrap items-center gap-3 mb-3">
+                <div className="flex flex-wrap items-center gap-3 mb-3">
                     <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-blue-600">
                       <span className="w-2 h-2 rounded-full bg-blue-500"></span>
                       IMPORTANT NOTICE
@@ -209,12 +235,13 @@ export default function Hero() {
                 {notices.length > 1 && (
                   <div className="flex items-center gap-2 self-start">
                     <button
+                      type="button"
                       onClick={() =>
                         setActiveNoticeIndex((prev) =>
                           prev === 0 ? notices.length - 1 : prev - 1
                         )
                       }
-                      className="p-2 rounded-full border border-gray-200 hover:bg-gray-50 transition-colors"
+                    className="w-9 h-9 flex items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm hover:bg-gray-50 transition-colors"
                       aria-label="Previous notice"
                     >
                       <svg
@@ -227,16 +254,17 @@ export default function Hero() {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                       </svg>
                     </button>
-                    <span className="text-sm font-semibold text-gray-500">
+                    <span className="text-sm font-semibold text-gray-900 bg-white/80 px-2 py-1 rounded-full border border-transparent shadow-sm">
                       {activeNoticeIndex + 1}/{notices.length}
                     </span>
                     <button
+                      type="button"
                       onClick={() =>
                         setActiveNoticeIndex((prev) =>
                           prev === notices.length - 1 ? 0 : prev + 1
                         )
                       }
-                      className="p-2 rounded-full border border-gray-200 hover:bg-gray-50 transition-colors"
+                      className="w-9 h-9 flex items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm hover:bg-gray-50 transition-colors"
                       aria-label="Next notice"
                     >
                       <svg
@@ -254,10 +282,10 @@ export default function Hero() {
               </div>
 
               <div className="bg-gray-50 rounded-2xl p-5 border border-gray-100 space-y-4">
-                <p className="text-base leading-relaxed text-gray-600">
+                <p className="text-base leading-relaxed text-gray-900">
                   {notices[activeNoticeIndex].description}
                 </p>
-                <ul className="space-y-2 text-sm text-gray-600">
+                <ul className="space-y-2 text-sm text-gray-900">
                   {notices[activeNoticeIndex].highlights.map((point, idx) => (
                     <li key={idx} className="flex items-start gap-2">
                       <span className="w-2 h-2 rounded-full bg-blue-500 mt-2" />
@@ -271,27 +299,31 @@ export default function Hero() {
                 <a
                   href={notices[activeNoticeIndex].primaryAction.href}
                   className="flex-1 text-center bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-                  onClick={() => setIsNoticeOpen(false)}
+                  onClick={handleCloseNotices}
                 >
                   {notices[activeNoticeIndex].primaryAction.label}
                 </a>
                 {notices[activeNoticeIndex].secondaryAction ? (
                   <a
                     href={notices[activeNoticeIndex].secondaryAction.href}
-                    className="flex-1 text-center border border-gray-200 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+                    className="flex-1 text-center border border-gray-200 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-gray-900"
+                    download={notices[activeNoticeIndex].secondaryAction.download ? true : undefined}
+                    target={notices[activeNoticeIndex].secondaryAction.download ? '_blank' : undefined}
+                    rel="noreferrer"
+                    onClick={handleCloseNotices}
                   >
                     {notices[activeNoticeIndex].secondaryAction.label}
                   </a>
                 ) : (
                   <button
-                    onClick={() => setIsNoticeOpen(false)}
+                    type="button"
+                    onClick={handleCloseNotices}
                     className="flex-1 text-center border border-gray-200 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
                   >
                     Close
                   </button>
                 )}
               </div>
-            </div>
             </div>
           </div>
         </div>

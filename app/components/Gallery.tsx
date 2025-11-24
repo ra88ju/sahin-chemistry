@@ -1,13 +1,17 @@
-// Placeholder images - replace with actual images
+import Image from 'next/image';
+
+// Simple gallery items. Save your attached photo to `public/gallery/attached.jpg`.
+// The first item points to that file; other items fall back to existing
+// public images. Replace these with your real images under /public/gallery.
 const galleryImages = [
-  { id: 1, title: 'Chemistry Lab Session' },
-  { id: 2, title: 'Students in Class' },
-  { id: 3, title: 'Experiment Demonstration' },
-  { id: 4, title: 'Group Study' },
-  { id: 5, title: 'Lab Equipment' },
-  { id: 6, title: 'Award Ceremony' },
-  { id: 7, title: 'Field Trip' },
-  { id: 8, title: 'Research Project' },
+  { id: 1, title: 'Chemistry Lab Session', src: '/gallery/attached.jpg' },
+  { id: 2, title: 'Students in Class', src: '/book.jpg' },
+  { id: 3, title: 'Experiment Demonstration', src: '/books-graduation.jpg' },
+  { id: 4, title: 'Group Study', src: '/books-graduation.jpg' },
+  { id: 5, title: 'Lab Equipment', src: '/books-graduation.jpg' },
+  { id: 6, title: 'Award Ceremony', src: '/books-graduation.jpg' },
+  { id: 7, title: 'Field Trip', src: '/books-graduation.jpg' },
+  { id: 8, title: 'Research Project', src: '/books-graduation.jpg' },
 ];
 
 export default function Gallery() {
@@ -19,20 +23,19 @@ export default function Gallery() {
           {galleryImages.map((image) => (
             <div
               key={image.id}
-              className="bg-gradient-to-br from-blue-400 to-indigo-600 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 aspect-square flex items-center justify-center group cursor-pointer relative"
+              className="rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 aspect-square relative"
             >
-              <div className="text-white text-center p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-                <p className="font-semibold">{image.title}</p>
+              <div className="absolute inset-0 z-0">
+                <Image src={image.src} alt={image.title} fill className="object-cover" />
               </div>
+
               <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-opacity duration-300" />
-              {/* Replace with actual image:
-              <Image
-                src={`/gallery/${image.id}.jpg`}
-                alt={image.title}
-                fill
-                className="object-cover"
-              />
-              */}
+
+              <div className="relative z-10 flex items-center justify-center h-full p-4">
+                <p className="text-white text-center font-semibold opacity-90 bg-black bg-opacity-30 px-3 py-1 rounded">
+                  {image.title}
+                </p>
+              </div>
             </div>
           ))}
         </div>
