@@ -8,8 +8,7 @@ export default function Footer() {
           <div>
             <h3 className="text-xl font-bold mb-4">Sahin Chemistry</h3>
             <p className="text-gray-400">
-              Excellence in chemical education for over a decade. Building future chemists with
-              innovative teaching and practical experience.
+              🌟 Chemistry World: রসায়ন শেখার সর্বাধিক নির্ভরযোগ্য প্রাইভেট সেন্টার
             </p>
           </div>
           <div>

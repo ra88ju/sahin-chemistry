@@ -306,8 +306,8 @@ export default function Courses() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900">Our Courses</h2>
-          <p className="text-blue-500 text-lg mt-3 max-w-2xl mx-auto text-base">
-            Select from curated modules designed to balance theory, lab experience, and problem-solving clinics.
+          <p className="text-blue-700 text-lg mt-3 max-w-2xl mx-auto text-base">
+            আপনি যে কোর্সে ভর্তি হতে আগ্রহী, অনুগ্রহ করে সেটি নির্বাচন করুন
           </p>
         </div>
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">

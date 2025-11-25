@@ -3,6 +3,15 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
+// ========== EASY TO CHANGE ==========
+// Replace the URL below to change the hero background image
+// Chemistry lab & education images:
+//   - Current (team photo): /hero-bg.jpg
+//   - Lab with students: https://images.unsplash.com/photo-1581093808694-7b8349abc3e7?auto=format&fit=crop&w=2000&q=80
+//   - Modern chemistry lab: https://images.unsplash.com/photo-1576174881033-58b1e0c9ce13?auto=format&fit=crop&w=2000&q=80
+//   - Science experiment: https://images.unsplash.com/photo-1530549233789-810c7e383e7d?auto=format&fit=crop&w=2000&q=80
+const HERO_BACKGROUND_IMAGE = '/hero-bg.jpg';
+
 const highlightColors = ['#DBEAFE', '#CFFAFE', '#FEE2E2', '#F5F3FF'];
 
 const notices = [
@@ -82,22 +91,18 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative pt-32 pb-24 overflow-hidden text-white"
+      className="relative pt-24 pb-32 overflow-hidden text-white min-h-screen flex items-center"
+      style={{
+        backgroundImage: `url(${HERO_BACKGROUND_IMAGE})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
     >
-      {/* Background image */}
-      <div className="absolute inset-0 -z-20">
-        <Image
-          src="https://images.unsplash.com/photo-1581093806997-124204d9fa9d?auto=format&fit=crop&w=1600&q=80"
-          alt="Chemistry lab background"
-          fill
-          className="object-cover"
-          priority
-          unoptimized
-        />
-      </div>
-
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/90 via-indigo-800/85 to-blue-700/80 backdrop-blur-sm -z-10" />
+      {/* Dark gradient overlay for better text readability */}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-900/95 via-indigo-900/80 to-blue-800/60 -z-10" />
+      
+      {/* Additional subtle overlay for depth */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-transparent to-indigo-600/20 -z-10" />
 
       <div className="container mx-auto px-4 relative">
         <div className="grid items-center gap-12 lg:grid-cols-2">
@@ -109,8 +114,7 @@ export default function Hero() {
               className="text-lg md:text-xl mb-8 transition-colors duration-700 ease-in-out"
               style={{ color: highlightColors[colorIndex] }}
             >
-              Excellence in Chemical Education – Building Future Chemists with modern labs,
-              expert mentors, and interactive learning experiences.
+              🌟 Chemistry World: রসায়ন শেখার সর্বাধিক নির্ভরযোগ্য প্রাইভেট সেন্টার
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-4 lg:justify-start justify-center">
               <a
@@ -169,7 +173,7 @@ export default function Hero() {
 
           <div className="relative">
             <div className="absolute inset-0 bg-white/10 blur-3xl rounded-full -z-10"></div>
-            <div className="rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-white/5 backdrop-blur relative aspect-[4/3]">
+            <div className="rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-white/5 backdrop-blur relative aspect-4/3">
               <Image
                 src="/books-graduation.jpg"
                 alt="Stack of books with graduation cap and ladder - symbolizing education and achievement"
@@ -195,7 +199,7 @@ export default function Hero() {
             aria-label="Latest important notice"
             onClick={(event) => event.stopPropagation()}
           >
-            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
+            <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
             <button
               type="button"
               onClick={handleCloseNotices}
