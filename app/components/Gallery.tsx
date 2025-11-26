@@ -4,7 +4,14 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 // Gallery items. Make sure images are in the public/gallery folder or public root.
-const galleryImages = [
+interface GalleryImage {
+  id: number;
+  title: string;
+  src: string;
+  fallback?: string;
+}
+
+const galleryImages: GalleryImage[] = [
   { id: 1, title: 'Chemistry World Team', src: '/gallery/attached.jpg', fallback: '/gallery/books-graduation.jpg' },
   { id: 2, title: 'Students in Class', src: '/gallery/books-graduation.jpg' },
   { id: 3, title: 'Experiment Demonstration', src: '/gallery/books-graduation.jpg' },

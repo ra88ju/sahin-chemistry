@@ -154,7 +154,9 @@ export default function Hero() {
               className="text-lg md:text-xl mb-8 transition-colors duration-700 ease-in-out"
               style={{ color: highlightColors[colorIndex] }}
             >
+               Quality teaching is our formula for your success.”
               🌟 Chemistry World: রসায়ন শেখার সর্বাধিক নির্ভরযোগ্য প্রাইভেট সেন্টার
+
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-4 lg:justify-start justify-center">
               <a
