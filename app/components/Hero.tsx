@@ -107,9 +107,49 @@ export default function Hero() {
       <div className="container mx-auto px-4 relative">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div className="text-center lg:text-left">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight animate-fade-in">
+            <h1 
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight hero-3d-title"
+              onMouseMove={(e) => {
+                const card = e.currentTarget;
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 15;
+                const rotateY = (centerX - x) / 15;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(30px) scale(1.05)`;
+                card.style.transition = 'none';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = '';
+                e.currentTarget.style.transition = 'transform 0.5s ease-out';
+              }}
+            >
               Welcome to  Chemistry World
             </h1>
+            <style jsx global>{`
+              .hero-3d-title {
+                transform-style: preserve-3d;
+                animation: float3d 6s ease-in-out infinite;
+                transition: transform 0.5s ease-out;
+              }
+              
+              @keyframes float3d {
+                0%, 100% {
+                  transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px) translateZ(0px);
+                }
+                25% {
+                  transform: perspective(1000px) rotateX(3deg) rotateY(-3deg) translateY(-8px) translateZ(15px);
+                }
+                50% {
+                  transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(-12px) translateZ(20px);
+                }
+                75% {
+                  transform: perspective(1000px) rotateX(-3deg) rotateY(3deg) translateY(-8px) translateZ(15px);
+                }
+              }
+            `}</style>
             <p
               className="text-lg md:text-xl mb-8 transition-colors duration-700 ease-in-out"
               style={{ color: highlightColors[colorIndex] }}

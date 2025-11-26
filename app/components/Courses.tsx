@@ -25,7 +25,7 @@ interface Course {
 
 const courses: Course[] = [
   {
-    name: 'Organic Chemistry',
+    name: 'SSC Chemistry ',
     duration: '6 Months',
     description: 'Comprehensive study of carbon compounds, reactions, and mechanisms.',
     level: 'Advanced',
@@ -54,7 +54,7 @@ const courses: Course[] = [
     ],
   },
   {
-    name: 'Inorganic Chemistry',
+    name: 'HSC Chemistry',
     duration: '6 Months',
     description: 'Explore the properties and behavior of inorganic compounds.',
     level: 'Intermediate',
@@ -78,7 +78,7 @@ const courses: Course[] = [
     ],
   },
   {
-    name: 'Physical Chemistry',
+    name: 'Varsity Admission',
     duration: '6 Months',
     description: 'Study of physical properties and principles governing chemical systems.',
     level: 'Advanced',
@@ -107,7 +107,7 @@ const courses: Course[] = [
     ],
   },
   {
-    name: 'Analytical Chemistry',
+    name: 'Medical Admission',
     duration: '4 Months',
     description: 'Learn techniques for analyzing chemical composition and structure.',
     level: 'Intermediate',
@@ -123,52 +123,17 @@ const courses: Course[] = [
       'Analytical case studies connecting theory to real samples.',
     ],
   },
-  {
-    name: 'Biochemistry',
-    duration: '5 Months',
-    description: 'Understand chemical processes within living organisms.',
-    level: 'Beginner',
-    startSession: 'Autumn 2025',
-    sessionsPerWeek: '2 Sessions / week',
-    highlights: ['Protein folding studios', 'Metabolic pathway mapping'],
-    enrollmentStatus: 'Open',
-    curriculumUrl: '#admission',
-    theme: 'indigo',
-    details: [
-      'Protein folding studios exploring thermodynamic stability.',
-      'Metabolic pathway mapping with animated visual aids.',
-      'Lab journals focused on living systems chemistry.',
-    ],
-  },
-  {
-    name: 'Advanced Lab Techniques',
-    duration: '3 Months',
-    description: 'Hands-on training with modern laboratory equipment and methods.',
-    level: 'Advanced',
-    startSession: 'Autumn 2025',
-    sessionsPerWeek: '4 Sessions / week',
-    highlights: ['Industry-grade equipment access', 'Safety certification included'],
-    enrollmentStatus: 'Filling Fast',
-    curriculumUrl: '#admission',
-    theme: 'cyan',
-    details: [
-      'Blueprints for setting up advanced lab workflows safely.',
-      'Equipment deep dives with manufacturer-style run-throughs.',
-      'Evaluation rubrics covering troubleshooting and analysis.',
-    ],
-  },
 ];
 
-const levelThemes: Record<
-  Course['theme'],
-  {
-    pill: string;
-    gradient: string;
-    text: string;
-    dot: string;
-    border: string;
-  }
-> = {
+type ThemeStyles = {
+  pill: string;
+  gradient: string;
+  text: string;
+  dot: string;
+  border: string;
+};
+
+const levelThemes: Record<'blue' | 'indigo' | 'cyan', ThemeStyles> = {
   blue: {
     pill: 'bg-blue-50 text-blue-700',
     gradient: 'from-blue-500/10 via-blue-500/5 to-transparent',
@@ -193,11 +158,16 @@ const levelThemes: Record<
 };
 
 // Helper function to extract YouTube video ID from URL
-const getYouTubeVideoId = (url: string): string | null => {
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-  const match = url.match(regExp);
-  return match && match[2].length === 11 ? match[2] : null;
-};
+function getYouTubeVideoId(url: string): string | null {
+  try {
+    if (!url) return null;
+    const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/;
+    const match = url.match(regExp);
+    return match && match[1].length === 11 ? match[1] : null;
+  } catch {
+    return null;
+  }
+}
 
 // Helper function to get embed URL
 const getYouTubeEmbedUrl = (url: string): string => {
